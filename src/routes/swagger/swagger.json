@@ -1,0 +1,383 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is an online super heros server. Below you can find a detailed documentation regarding all possible requests that our online super heros server can handle. Have fun!  <br /> <br /> <i>P.S. In order to see what fields are required in the request body and their types - click on the <i><strong>Model</strong></i> button next to the <i><strong>Example Value</strong></i>.</i>",
+    "version": "1.0.0",
+    "title": "back-end super-heros"
+  },
+  "host": "backend-superheros.herokuapp.com",
+  "basePath": "/api",
+  "schemes": [
+    "https"
+  ],
+  "tags": [
+    {
+      "name": "Heros",
+      "description": "Operations about hero"
+    }
+  ],
+  "paths": {
+    "/heros": {
+      "get": {
+        "tags": [
+          "heros"
+        ],
+        "summary": "Get list of heros",
+        "operationId": "getHeros",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation successful heros list",
+            "schema": {
+              "$ref": "#/definitions/herosInfoSuccess"
+            }
+          },
+          "400": {
+            "description": "Invalid credentials supplied",
+            "schema": {
+              "$ref": "#/definitions/badRequest"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "heros"
+        ],
+        "summary": "Create new hero.",
+        "description": "This creates a new hero.",
+        "operationId": "createHero",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "image",
+            "in": "formData",
+            "description": "file to upload",
+            "required": true,
+            "type": "file"
+          },
+          {
+            "name": "nickname",
+            "in": "formData",
+            "description": "nickname data to pass to server",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "realName",
+            "in": "formData",
+            "description": "realName data to pass to server",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "originDescription",
+            "in": "formData",
+            "description": "originDescription data to pass to server",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "superpowers",
+            "in": "formData",
+            "description": "superpowers data to pass to server",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catchPhrase",
+            "in": "formData",
+            "description": "catchPhrase data to pass to server",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Operation successful. hero info",
+            "schema": {
+              "$ref": "#/definitions/herosResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid credentials supplied",
+            "schema": {
+              "$ref": "#/definitions/badRequest"
+            }
+          }
+        }
+      }
+    },
+    "/heros/:heroId": {
+      "get": {
+        "tags": [
+          "heros"
+        ],
+        "summary": "Get info about hero",
+        "operationId": "getHeroInfo",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation successful hero info",
+            "schema": {
+              "$ref": "#/definitions/herosResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid credentials supplied",
+            "schema": {
+              "$ref": "#/definitions/badRequest"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "heros"
+        ],
+        "summary": "Delete hero by id.",
+        "operationId": "deleteHero",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "hero deleted",
+            "schema": {
+              "$ref": "#/definitions/deleteSuccess"
+            }
+          },
+          "400": {
+            "description": "Invalid credentials supplied",
+            "schema": {
+              "$ref": "#/definitions/badRequest"
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "heros"
+        ],
+        "summary": "Update hero by id.",
+        "description": "This update a hero.",
+        "operationId": "updateHero",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "image",
+            "in": "formData",
+            "description": "file to upload",
+            "required": false,
+            "type": "file"
+          },
+          {
+            "name": "nickname",
+            "in": "formData",
+            "description": "nickname data to pass to server",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "realName",
+            "in": "formData",
+            "description": "realName data to pass to server",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "originDescription",
+            "in": "formData",
+            "description": "originDescription data to pass to server",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "superpowers",
+            "in": "formData",
+            "description": "superpowers data to pass to server",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catchPhrase",
+            "in": "formData",
+            "description": "catchPhrase data to pass to server",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation successful.",
+            "schema": {
+              "$ref": "#/definitions/herosResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid credentials supplied",
+            "schema": {
+              "$ref": "#/definitions/badRequest"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "HeroPost": {
+      "type": "object",
+      "properties": {
+        "image": {
+          "type": "string",
+          "example": "File"
+        },
+        "nickname": {
+          "type": "string",
+          "example": "string"
+        },
+        "realName": {
+          "type": "string",
+          "example": "string"
+        },
+        "originDescription": {
+          "type": "string",
+          "example": "string"
+        },
+        "superpowers": {
+          "type": "string",
+          "example": "string"
+        },
+        "catchPhrase": {
+          "type": "string",
+          "example": "string"
+        }
+      },
+      "required": [
+        "nickname",
+        "realName"
+      ]
+    },
+    "deleteSuccess": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "hero deleted"
+        }
+      }
+    },
+    "badRequest": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "herosInfoSuccess": {
+      "type": "object",
+      "properties": {
+        "heros": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/herosResponse"
+          },
+          "example": [
+            {
+              "_id": "62fe2e8c7496268b6a9d727b",
+              "nickname": "Superman",
+              "realName": "Clark Kent",
+              "originDescription": "he was born Kal-El on the planet Krypton…",
+              "superpowers": "solar energy absorption and…",
+              "catchPhrase": "“Look, up in the sky, it's a bird, it's a plane, it's Superman!”",
+              "image": "https://serhiibackend.s3.eu-central-1.amazonaws.com/upload/bc3e4e27-9c54-47aa-b78b-b82d08fcd8f9-644-superman.jpg"
+            },
+            {
+              "_id": "62fe2e8c7496268b6a9d727b",
+              "nickname": "Superman",
+              "realName": "Clark Kent",
+              "originDescription": "he was born Kal-El on the planet Krypton…",
+              "superpowers": "solar energy absorption and…",
+              "catchPhrase": "“Look, up in the sky, it's a bird, it's a plane, it's Superman!”",
+              "image": "https://serhiibackend.s3.eu-central-1.amazonaws.com/upload/bc3e4e27-9c54-47aa-b78b-b82d08fcd8f9-644-superman.jpg"
+            }
+          ]
+        },
+        "page": {
+          "type": "number",
+          "example": 1
+        },
+        "total": {
+          "type": "number",
+          "example": 2
+        },
+        "status": {
+          "type": "string",
+          "example": "success"
+        }
+      }
+    },
+    "herosResponse": {
+      "type": "object",
+      "properties": {
+        "hero": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "example": "62fe2e8c7496268b6a9d727b"
+            },
+            "nickname": {
+              "type": "string",
+              "example": "Superman"
+            },
+            "realName": {
+              "type": "string",
+              "example": "Clark Kent"
+            },
+            "originDescription": {
+              "type": "string",
+              "example": "he was born Kal-El on the planet Krypton, before being rocketed to\\r\\nEarth as an infant by his scientist father Jor-El, moments before Krypton's destruction…"
+            },
+            "superpowers": {
+              "type": "string",
+              "example": "solar energy absorption and healing factor, solar flare and heat vision,\\r\\nsolar invulnerability, flight…"
+            },
+            "catchPhrase": {
+              "type": "string",
+              "example": "“Look, up in the sky, it's a bird, it's a plane, it's Superman!”"
+            },
+            "image": {
+              "type": "string",
+              "example": "https://serhiibackend.s3.eu-central-1.amazonaws.com/upload/bc3e4e27-9c54-47aa-b78b-b82d08fcd8f9-644-superman.jpg"
+            }
+          }
+        },
+        "status": {
+          "type": "string",
+          "example": "success"
+        }
+      },
+      "required": [
+        "owner",
+        "recipient",
+        "sum"
+      ]
+    }
+  }
+}
