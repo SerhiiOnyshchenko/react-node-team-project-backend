@@ -5,7 +5,7 @@ const { errorHandler } = require('./helpers/apiHelpes');
 
 // const authRouter = require('./routes/api');
 // const servicesSidebarRouter = require('./routes/api');
-// const newsRouter = require('./routes/api');
+const newsRouter = require('./routes/api/news');
 // const noticesRouter = require('./routes/api');
 const userRouter = require('./routes/api/user');
 const swaggerRouter = require('./routes/swagger/index.js');
@@ -20,7 +20,7 @@ app.use(express.json());
 
 // app.use('/api/auth', authRouter);
 // app.use('/api/services-sidebar', servicesSidebarRouter);
-// app.use('/api/news', newsRouter);
+app.use('/api/news', newsRouter);
 // app.use('/api/notices', noticesRouter);
 app.use('/api/user', userRouter);
 app.use('/api/', swaggerRouter);
