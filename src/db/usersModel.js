@@ -24,6 +24,10 @@ const userSchema = new Schema(
       // required, validation ?
       type: String,
     },
+    birthday: {
+      type: String,
+      default: "00.00.0000",
+    },
     token: {
       type: String,
       default: null,
