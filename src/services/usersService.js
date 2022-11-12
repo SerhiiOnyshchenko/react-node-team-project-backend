@@ -3,7 +3,7 @@ const secret = process.env.SECRET;
 // const PORT = process.env.PORT;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { User } = require("../models/user");
+const { User } = require("../db/usersModel");
 const { NoAuthorizedError, AuthConflictError } = require("../helpers/errors");
 
 const registration = async ({ email, password, name, phone, city }) => {

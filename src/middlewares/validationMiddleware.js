@@ -1,4 +1,4 @@
-const { schemas } = require("../models/user");
+const { schemas } = require("../db/usersModel");
 const { ValidationError } = require("../helpers/errors");
 
 module.exports = {
