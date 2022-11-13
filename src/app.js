@@ -8,6 +8,7 @@ const { errorHandler } = require('./helpers/apiHelpes');
 const newsRouter = require('./routes/api/news');
 // const noticesRouter = require('./routes/api');
 const userRouter = require('./routes/api/user');
+const petRouter = require('./routes/api/pet');
 const swaggerRouter = require('./routes/swagger/index.js');
 
 const app = express();
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use('/api/news', newsRouter);
 // app.use('/api/notices', noticesRouter);
 app.use('/api/user', userRouter);
+app.use('/api/pet', petRouter);
 app.use('/api/', swaggerRouter);
 
 app.use((_, res, __) => {
