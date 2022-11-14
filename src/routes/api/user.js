@@ -14,9 +14,8 @@ const {
 const { asyncWrapper } = require("../../helpers/apiHelpes");
 const { authMiddleware } = require("../../middlewares/authMiddleware");
 
-const router = new express.Router();
 
-// router.route("/").get();
+const router = new express.Router();
 
 router
   .route("/registration")
@@ -39,4 +38,4 @@ router.use((_, res, __) => {
   });
 });
 
-module.exports = router;
+ module.exports = router;
