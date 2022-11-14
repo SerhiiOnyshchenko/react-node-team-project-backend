@@ -1,6 +1,8 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
+const phoneRegexp = /^(\+380)\d{9}$/;
+
 const userSchema = new Schema(
   {
     name: {
@@ -17,8 +19,10 @@ const userSchema = new Schema(
       unique: true,
     },
     phone: {
-      // required, validation ?
       type: String,
+      required: true,
+      match: phoneRegexp,
+      unique: true,
     },
     city: {
       // required, validation ?
@@ -32,6 +36,14 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      default: "",
+    },
   },
   { versionKey: false, timestamps: true }
 );
@@ -44,9 +56,8 @@ const registerSchema = Joi.object({
       tlds: { allow: ["com", "net", "ua"] },
     })
     .required(),
-  password: Joi.string().required(),
-  // required, validation ?
-  phone: Joi.string(),
+  password: Joi.string().min(8).max(32).required(),
+  phone: Joi.alternatives([Joi.string(), Joi.number()]),
   // required, validation ?
   city: Joi.string(),
 });
@@ -58,11 +69,16 @@ const loginSchema = Joi.object({
       tlds: { allow: ["com", "net", "ua"] },
     })
     .required(),
-  password: Joi.string().min(6).required(),
+  password: Joi.string().min(7).required(),
+});
+
+const verifyEmailSchema = Joi.object({
+  email: Joi.string().required(),
 });
 
 const schemas = {
   registerSchema,
+  verifyEmailSchema,
   loginSchema,
 };
 
