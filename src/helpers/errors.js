@@ -49,7 +49,7 @@ class NoPetError extends ParentsValidationError {
 module.exports = {
   ParentsValidationError,
   ValidationError,
-  WrongPramError,
+  WrongParamError,
   WrongBodyError,
   AuthConflictError,
   NoAuthorizedError,
