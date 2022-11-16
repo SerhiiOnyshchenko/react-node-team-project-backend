@@ -40,18 +40,18 @@ class NoAuthorizedError extends ParentsValidationError {
 }
 
 class NoPetError extends ParentsValidationError {
-  constructor(message) {
-    super(message);
-    this.status = 404;
-  }
+	constructor(message) {
+		super(message);
+		this.status = 404;
+	}
 }
 
 module.exports = {
-  ParentsValidationError,
-  ValidationError,
-  WrongPramError,
-  WrongBodyError,
-  AuthConflictError,
-  NoAuthorizedError,
-  NoPetError,
+	ParentsValidationError,
+	ValidationError,
+	WrongParamError,
+	WrongBodyError,
+	AuthConflictError,
+	NoAuthorizedError,
+	NoPetError,
 };
