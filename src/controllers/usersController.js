@@ -4,7 +4,8 @@ const {
   repeatUserVerification,
   login,
   logout,
-} = require("../services/usersService");
+  getUserInfoService,
+} = require('../services/usersService');
 // const { sendEmail } = require("../helpers/sendEmail");
 
 const registrationController = async (req, res) => {
@@ -17,13 +18,13 @@ const registrationController = async (req, res) => {
 const verificationController = async (req, res) => {
   const { verificationToken } = req.params;
   await userVerification(verificationToken);
-  res.json({ message: "Verification successful" });
+  res.json({ message: 'Verification successful' });
 };
 
 const verificationRepeatController = async (req, res) => {
   const { email } = req.body;
   await repeatUserVerification(email);
-  res.json({ message: "Verification email sent" });
+  res.json({ message: 'Verification email sent' });
 };
 
 const loginController = async (req, res) => {
@@ -38,10 +39,17 @@ const logoutController = async (req, res) => {
   res.status(204).json({ message: `Logout user: ${id}` });
 };
 
+const getUserInfoController = async (req, res) => {
+  const { id } = req.user;
+  const { user } = await getUserInfoService(id);
+  res.json({ user });
+};
+
 module.exports = {
   registrationController,
   verificationController,
   verificationRepeatController,
   loginController,
   logoutController,
+  getUserInfoController,
 };
