@@ -11,6 +11,7 @@ const { Pet } = require('../db/petsModel');
 const { NoAuthorizedError, AuthConflictError, ValidationError } = require('../helpers/errors');
 const { sendEmail } = require('../helpers/sendEmail');
 
+
 const { BASE_URL } = process.env;
 
 const createVerifyEmail = (email, verificationToken) => {
@@ -90,6 +91,7 @@ const logout = async id => {
   }
   await User.findByIdAndUpdate(id, { token: null });
 };
+
 
 const getUserInfoService = async id => {
   const user = await User.findById(id, '-password -token');

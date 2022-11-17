@@ -1,13 +1,13 @@
 const Joi = require("joi");
 const { schemas } = require("../db/usersModel");
-const { WrongBodyError, ValidationError } = require('../helpers/errors');
+const { WrongBodyError, ValidationError } = require("../helpers/errors");
 
 const validateObjectId = (req, res, next) => {
-	const schema = Joi.string().regex(/^[0-9a-fA-F]{24}$/);
-	const validId = schema.validate(req.params.id);
-	if (validId.error) {
-		return next(new WrongBodyError('Not found'));
-	}
+  const schema = Joi.string().regex(/^[0-9a-fA-F]{24}$/);
+  const validId = schema.validate(req.params.id);
+  if (validId.error) {
+    return next(new WrongBodyError("Not found"));
+  }
 };
 
 module.exports = {

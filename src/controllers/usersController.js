@@ -7,6 +7,7 @@ const {
   getUserInfoService,
   updateUserInfoService,
 } = require('../services/usersService');
+
 // const { sendEmail } = require("../helpers/sendEmail");
 
 const registrationController = async (req, res) => {
