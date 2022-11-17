@@ -59,7 +59,7 @@ const registerSchema = Joi.object({
   password: Joi.string().min(8).max(32).required(),
   phone: Joi.alternatives([Joi.string(), Joi.number()]),
   // required, validation ?
-  city: Joi.string(),
+  city: Joi.string().min(3),
 });
 
 const loginSchema = Joi.object({
