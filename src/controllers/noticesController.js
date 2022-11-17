@@ -3,19 +3,24 @@ const {
 	getNotices,
 	getNoticesById,
 	removeNotices,
+	getOneNotices,
+	getUserNotices,
 } = require('../services/noticesService');
 const { WrongParamError } = require('../helpers/errors');
 
 const listNoticesController = async (req, res) => {
 	const { category } = req.body;
-	// const { page = 1, limit = 20} = req.query;
-	// const { id: owner } = req.user;
 	const notices = await getNotices(category);
 	res.json(notices);
 };
 
+const userListNoticesController = async (req, res) => {
+	const { id: owner } = req.user;
+	const notices = await getUserNotices(owner);
+	res.json(notices);
+};
+
 const getNoticesByIdController = async (req, res) => {
-	// const { id: owner } = req.user;
 	const noticesId = req.params.id;
 	const notices = await getNoticesById(noticesId);
 	if (!notices) {
@@ -25,7 +30,7 @@ const getNoticesByIdController = async (req, res) => {
 };
 
 const addNoticesController = async (req, res) => {
-	// const { id: owner } = req.user;
+	const { id: owner } = req.user;
 	const {
 		titleOfAd,
 		namePet,
@@ -47,15 +52,16 @@ const addNoticesController = async (req, res) => {
 		price,
 		comments,
 		category,
+		owner,
 	});
 	res.status(201).json(pet);
 };
 
 const removeNoticesController = async (req, res) => {
 	const noticesId = req.params.id;
-	//   const { id: owner } = req.user;
-	const notices = await getNoticesById(noticesId);
-	if (!notices) {
+	const { id: owner } = req.user;
+	const myNotices = await getOneNotices(noticesId, owner);
+	if (!myNotices) {
 		throw new WrongParamError('Not found');
 	}
 	removeNotices(noticesId);
@@ -67,4 +73,5 @@ module.exports = {
 	listNoticesController,
 	getNoticesByIdController,
 	removeNoticesController,
+	userListNoticesController,
 };

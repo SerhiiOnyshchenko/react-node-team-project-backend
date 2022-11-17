@@ -4,10 +4,10 @@ const cors = require('cors');
 
 const app = express();
 
-const { noticesRouter } = require('./routes/api/noticesRouter');
 const { errorHandler } = require('./helpers/apiHelpes');
 
 // const servicesSidebarRouter = require('./routes/api');
+const noticesRouter = require('./routes/api/noticesRouter');
 const newsRouter = require('./routes/api/news');
 const userRouter = require('./routes/api/user');
 const petRouter = require('./routes/api/pet');
@@ -29,12 +29,12 @@ app.use('/api/pet', petRouter);
 app.use('/api/', swaggerRouter);
 
 app.use((_, res, __) => {
-  res.status(404).json({
-    status: 'error',
-    code: 404,
-    message: 'Use api on routes: /api/user',
-    data: 'Not found',
-  });
+	res.status(404).json({
+		status: 'error',
+		code: 404,
+		message: 'Use api on routes: /api/user',
+		data: 'Not found',
+	});
 });
 app.use(errorHandler);
 

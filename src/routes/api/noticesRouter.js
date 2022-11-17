@@ -7,19 +7,32 @@ const {
 	removeNoticesValidation,
 } = require('../../middlewares/validationMiddleware');
 
+const { authMiddleware } = require('../../middlewares/authMiddleware');
+
 const {
 	addNoticesController,
 	listNoticesController,
 	getNoticesByIdController,
 	removeNoticesController,
+	userListNoticesController,
 } = require('../../controllers/noticesController');
 const { asyncWrapper } = require('../../helpers/apiHelpes');
 
+router.get('/user', authMiddleware, asyncWrapper(userListNoticesController));
 router.get('/', asyncWrapper(listNoticesController));
 router.get('/:id', getByIdValidate, asyncWrapper(getNoticesByIdController));
-router.post('/', addNoticesValidation, asyncWrapper(addNoticesController));
-router.delete('/:id', removeNoticesValidation, asyncWrapper(removeNoticesController));
+router.post(
+	'/',
+	authMiddleware,
+	addNoticesValidation,
+	asyncWrapper(addNoticesController)
+);
+router.delete(
+	'/:id',
+	authMiddleware,
+	removeNoticesValidation,
+	asyncWrapper(removeNoticesController)
+);
 // router.put('/:id');
-// router.patch('/:id/favorite');
 
-module.exports = { noticesRouter: router };
+module.exports = router;
