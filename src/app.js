@@ -4,13 +4,13 @@ const cors = require("cors");
 
 const app = express();
 
-const { noticesRouter } = require("./routes/api/noticesRouter");
-const { errorHandler } = require("./helpers/apiHelpes");
+const { errorHandler } = require('./helpers/apiHelpes');
 
 // const servicesSidebarRouter = require('./routes/api');
-const newsRouter = require("./routes/api/news");
-const userRouter = require("./routes/api/user");
-const petRouter = require("./routes/api/pet");
+const noticesRouter = require('./routes/api/noticesRouter');
+const newsRouter = require('./routes/api/news');
+const userRouter = require('./routes/api/user');
+const petRouter = require('./routes/api/pet');
 const cityRouter = require("./routes/api/cityRouter");
 
 const swaggerRouter = require("./routes/swagger/index.js");
