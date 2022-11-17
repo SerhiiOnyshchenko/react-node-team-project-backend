@@ -6,11 +6,13 @@ const {
   loginController,
   logoutController,
   getUserInfoController,
+  updateUserInfoController,
 } = require('../../controllers/usersController');
 const {
   registerUserValidation,
   loginUserValidation,
   emailBodyValidation,
+  updateUserInfoValidation,
 } = require('../../middlewares/validationMiddleware');
 const { asyncWrapper } = require('../../helpers/apiHelpes');
 const { authMiddleware } = require('../../middlewares/authMiddleware');
@@ -23,6 +25,7 @@ router.route('/verify').post(emailBodyValidation, asyncWrapper(verificationRepea
 router.route('/login').post(loginUserValidation, asyncWrapper(loginController));
 router.route('/logout').post(authMiddleware, asyncWrapper(logoutController));
 router.route('/current').get(authMiddleware, asyncWrapper(getUserInfoController));
+router.route('/update').post(authMiddleware, updateUserInfoValidation, asyncWrapper(updateUserInfoController));
 
 router.use((_, res, __) => {
   res.status(404).json({
