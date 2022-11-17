@@ -11,6 +11,7 @@ const { Pet } = require('../db/petsModel');
 const { NoAuthorizedError, AuthConflictError, ValidationError } = require('../helpers/errors');
 const { sendEmail } = require('../helpers/sendEmail');
 
+
 const { BASE_URL } = process.env;
 
 const createVerifyEmail = (email, verificationToken) => {
@@ -91,14 +92,23 @@ const logout = async id => {
   await User.findByIdAndUpdate(id, { token: null });
 };
 
+
 const getUserInfoService = async id => {
-  const user = await User.findById(id, '-password');
+  const user = await User.findById(id, '-password -token');
   if (!user) {
     throw new NoAuthorizedError('Not authorized');
   }
   const pets = await Pet.find({ userId: id });
   return { user: { ...user.toObject(), pets } };
 };
+
+const updateUserInfoService = async ({ id, name, email, birthday, phone, city }) => { 
+  const user = await User.findByIdAndUpdate(id, { name, email, birthday, phone, city }, { new: true, fields: {password: 0, token: 0} });
+  if (!user) {
+    throw new NoAuthorizedError('Not authorized');
+  }
+  return { user };
+}
 
 module.exports = {
   registration,
@@ -107,4 +117,5 @@ module.exports = {
   login,
   logout,
   getUserInfoService,
+  updateUserInfoService,
 };

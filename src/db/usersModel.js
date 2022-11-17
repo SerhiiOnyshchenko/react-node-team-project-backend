@@ -20,7 +20,7 @@ const userSchema = new Schema(
     },
     phone: {
       type: String,
-      required: true,
+      // required: true,
       match: phoneRegexp,
       unique: true,
     },
@@ -59,7 +59,7 @@ const registerSchema = Joi.object({
   password: Joi.string().min(8).max(32).required(),
   phone: Joi.alternatives([Joi.string(), Joi.number()]),
   // required, validation ?
-  city: Joi.string(),
+  city: Joi.string().min(3),
 });
 
 const loginSchema = Joi.object({
@@ -76,10 +76,23 @@ const verifyEmailSchema = Joi.object({
   email: Joi.string().required(),
 });
 
+const updateInfoSchema = Joi.object({
+  name: Joi.string(),
+  email: Joi.string()
+    .email({
+      minDomainSegments: 2,
+      tlds: { allow: ["com", "net", "ua"] },
+    }),
+  birthday: Joi.string(),
+  phone: Joi.alternatives([Joi.string(), Joi.number()]),
+  city: Joi.string(),
+})
+
 const schemas = {
   registerSchema,
   verifyEmailSchema,
   loginSchema,
+  updateInfoSchema,
 };
 
 const User = model("users", userSchema);
