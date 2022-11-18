@@ -10,6 +10,7 @@ const {
 	addToFavoriteController,
 	listFavoriteController,
 	deleteFavoriteController,
+	refreshTokenController,
 } = require('../../controllers/usersController');
 const {
 	registerUserValidation,
@@ -54,6 +55,10 @@ router
 router
 	.route('/favorite/:id')
 	.delete(authMiddleware, asyncWrapper(deleteFavoriteController));
+
+router
+	.route('/refreshtoken')
+	.post(authMiddleware, asyncWrapper(refreshTokenController));
 
 router.use((_, res, __) => {
 	res.status(404).json({

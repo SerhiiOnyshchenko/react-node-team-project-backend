@@ -155,6 +155,15 @@ const deleteFavoriteService = async (id, noticesId) => {
 	user.save();
 };
 
+const refreshTokenService = async (id) => { 
+	const token = jwt.sign({ id }, secret, { expiresIn: '1h' });
+	const user = await User.findByIdAndUpdate(id, { token });
+	if (!user) {
+		throw new NoAuthorizedError('Not authorized');
+	}
+	return {token}
+}
+
 module.exports = {
 	registration,
 	userVerification,
@@ -166,4 +175,5 @@ module.exports = {
 	addToFavoriteService,
 	listFavoriteService,
 	deleteFavoriteService,
+	refreshTokenService
 };
