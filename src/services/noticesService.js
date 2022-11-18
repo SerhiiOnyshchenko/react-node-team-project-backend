@@ -1,4 +1,5 @@
 const { Notices } = require('../db/noticesModel');
+const { s3Uploadv2 } = require('./s3service');
 
 const getNotices = async category => Notices.find({ category });
 
@@ -8,18 +9,23 @@ const getNoticesById = async id => Notices.findOne({ _id: id });
 
 const getOneNotices = async (id, owner) => Notices.findOne({ _id: id, owner });
 
-const addNotices = async ({
-	titleOfAd,
-	namePet,
-	dateOfBirch,
-	breed,
-	sex,
-	location,
-	price,
-	comments,
-	category,
-	owner,
-}) => {
+const addNotices = async (
+	{
+		titleOfAd,
+		namePet,
+		dateOfBirch,
+		breed,
+		sex,
+		location,
+		price,
+		comments,
+		category,
+		owner,
+	},
+	file
+) => {
+	const result = await s3Uploadv2(file);
+
 	const notices = new Notices({
 		titleOfAd,
 		namePet,
@@ -31,6 +37,7 @@ const addNotices = async ({
 		comments,
 		category,
 		owner,
+		image: result.Location,
 	});
 	await notices.save();
 	return notices;

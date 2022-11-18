@@ -37,6 +37,7 @@ const noticesSchema = new mongoose.Schema({
     type: String,
   },
 
+<<<<<<< HEAD
   category: {
     type: String,
     enum: ["lost/found", "in good hands", "sell"],
@@ -45,6 +46,20 @@ const noticesSchema = new mongoose.Schema({
   	type: Schema.Types.ObjectId,
   	ref: 'user',
   },
+=======
+	image: {
+		type: String,
+	},
+
+	category: {
+		type: String,
+		enum: ['lost/found', 'in good hands', 'sell'],
+	},
+	owner: {
+		type: Schema.Types.ObjectId,
+		ref: 'user',
+	},
+>>>>>>> 72f7e05ebf401e392d01e7e11c208dfe4335fe66
 });
 
 const Notices = mongoose.model("notices", noticesSchema);
