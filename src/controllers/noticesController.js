@@ -34,7 +34,7 @@ const addNoticesController = async (req, res) => {
 	const {
 		titleOfAd,
 		namePet,
-		dateOfBirch,
+		dateOfBirth,
 		breed,
 		sex,
 		location,
@@ -42,18 +42,21 @@ const addNoticesController = async (req, res) => {
 		comments,
 		category,
 	} = req.body;
-	const pet = await addNotices({
-		titleOfAd,
-		namePet,
-		dateOfBirch,
-		breed,
-		sex,
-		location,
-		price,
-		comments,
-		category,
-		owner,
-	});
+	const pet = await addNotices(
+		{
+			titleOfAd,
+			namePet,
+			dateOfBirth,
+			breed,
+			sex,
+			location,
+			price,
+			comments,
+			category,
+			owner,
+		},
+		req.file
+	);
 	res.status(201).json(pet);
 };
 
