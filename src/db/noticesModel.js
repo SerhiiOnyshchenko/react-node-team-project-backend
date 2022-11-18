@@ -37,6 +37,10 @@ const noticesSchema = new mongoose.Schema({
 		type: String,
 	},
 
+	image: {
+		type: String,
+	},
+
 	category: {
 		type: String,
 		enum: ['lost/found', 'in good hands', 'sell'],

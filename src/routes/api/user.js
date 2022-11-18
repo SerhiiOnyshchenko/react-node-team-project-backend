@@ -19,6 +19,7 @@ const {
 } = require('../../middlewares/validationMiddleware');
 const { asyncWrapper } = require('../../helpers/apiHelpes');
 const { authMiddleware } = require('../../middlewares/authMiddleware');
+const { uploadMiddleware } = require('../../middlewares/uploadMiddleware');
 
 const router = new express.Router();
 
@@ -40,6 +41,7 @@ router
 	.route('/update')
 	.post(
 		authMiddleware,
+		uploadMiddleware.single('image'),
 		updateUserInfoValidation,
 		asyncWrapper(updateUserInfoController)
 	);

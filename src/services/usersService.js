@@ -1,10 +1,9 @@
 require('dotenv').config();
-// const { nanoid } = require("nanoid");
 const { v4: uuidv4 } = require('uuid');
 const { Notices } = require('../db/noticesModel');
+const { s3Uploadv2 } = require('./s3service');
 
 const secret = process.env.SECRET;
-// const PORT = process.env.PORT;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { User } = require('../db/usersModel');
@@ -41,6 +40,8 @@ const registration = async ({ email, password, name, phone, city }) => {
 		city,
 		name,
 		verificationToken,
+		image:
+			'https://serhiibackend.s3.eu-central-1.amazonaws.com/upload/ef6ae7bf-ffd8-49f3-b202-5f792ad1841f-Default-avatar.jpg',
 	});
 	await sendEmail(createVerifyEmail(email, verificationToken));
 	return newUser;
@@ -107,22 +108,31 @@ const getUserInfoService = async id => {
 	return { user: { ...user.toObject(), pets } };
 };
 
-const updateUserInfoService = async ({
-	id,
-	name,
-	email,
-	birthday,
-	phone,
-	city,
-}) => {
-	const user = await User.findByIdAndUpdate(
-		id,
-		{ name, email, birthday, phone, city },
-		{ new: true, fields: { password: 0, token: 0 } }
-	);
-	if (!user) {
+const updateUserInfoService = async (
+	{ id, name, email, birthday, phone, city },
+	file
+) => {
+	let image = null;
+	const userOld = await User.findOne({ _id: id });
+	if (!userOld) {
 		throw new NoAuthorizedError('Not authorized');
 	}
+	if (file) {
+		// upload new file to aws
+		const result = await s3Uploadv2(file);
+		image = result.Location;
+
+		// delete old file from aws
+		// await s3Deletev2(userOld.image);
+	} else {
+		image = userOld.image;
+	}
+	const user = await User.findByIdAndUpdate(
+		id,
+		{ name, email, birthday, phone, city, image },
+		{ new: true, fields: { password: 0, token: 0 } }
+	);
+
 	return { user };
 };
 

@@ -1,8 +1,6 @@
 const { Schema, model } = require('mongoose');
 const Joi = require('joi');
 
-const mongoose = require('mongoose');
-
 const phoneRegexp = /^(\+380)\d{9}$/;
 
 const userSchema = new Schema(
@@ -27,6 +25,10 @@ const userSchema = new Schema(
 			unique: true,
 		},
 		city: {
+			// required, validation ?
+			type: String,
+		},
+		image: {
 			// required, validation ?
 			type: String,
 		},
@@ -62,7 +64,7 @@ const registerSchema = Joi.object({
 			tlds: { allow: ['com', 'net', 'ua'] },
 		})
 		.required(),
-	password: Joi.string().min(8).max(32).required(),
+	password: Joi.string().min(7).max(32).required(),
 	phone: Joi.alternatives([Joi.string(), Joi.number()]),
 	// required, validation ?
 	city: Joi.string().min(3),
