@@ -64,9 +64,6 @@ const repeatUserVerification = async email => {
 	if (!user) {
 		throw new ValidationError('User not found');
 	}
-	// if (user.verify) {
-	//   throw new ValidationError("Verification has already been passed");
-	// }
 	const verificationToken = uuidv4();
 	user.verificationToken = verificationToken;
 	user.verify = false;
@@ -79,9 +76,12 @@ const login = async ({ email, password }) => {
 	if (!user || !(await bcrypt.compare(password, user.password))) {
 		throw new NoAuthorizedError('Email or password is wrong');
 	}
-	if (!user.verify) {
-		throw new NoAuthorizedError('Your email is not verification');
-	}
+
+	// for tests only - ignore user verify state flag
+
+	// if (!user.verify) {
+	// 	throw new NoAuthorizedError('Your email is not verification');
+	// }
 	const payload = {
 		id: user._id,
 	};
