@@ -53,14 +53,17 @@ const getUserInfoController = async (req, res) => {
 const updateUserInfoController = async (req, res) => {
 	const { id } = req.user;
 	const { name, email, birthday, phone, city } = req.body;
-	const { user } = await updateUserInfoService({
-		id,
-		name,
-		email,
-		birthday,
-		phone,
-		city,
-	});
+	const { user } = await updateUserInfoService(
+		{
+			id,
+			name,
+			email,
+			birthday,
+			phone,
+			city,
+		},
+		req.file
+	);
 	res.json({ user });
 };
 

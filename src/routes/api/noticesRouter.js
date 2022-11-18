@@ -17,6 +17,7 @@ const {
 	userListNoticesController,
 } = require('../../controllers/noticesController');
 const { asyncWrapper } = require('../../helpers/apiHelpes');
+const { uploadMiddleware } = require('../../middlewares/uploadMiddleware');
 
 router.get('/user', authMiddleware, asyncWrapper(userListNoticesController));
 router.get('/', asyncWrapper(listNoticesController));
@@ -24,6 +25,7 @@ router.get('/:id', getByIdValidate, asyncWrapper(getNoticesByIdController));
 router.post(
 	'/',
 	authMiddleware,
+	uploadMiddleware.single('image'),
 	addNoticesValidation,
 	asyncWrapper(addNoticesController)
 );
