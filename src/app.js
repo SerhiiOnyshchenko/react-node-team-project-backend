@@ -13,6 +13,7 @@ const userRouter = require('./routes/api/user');
 const petRouter = require('./routes/api/pet');
 const friendsRouter = require('./routes/api/friends');
 const cityRouter = require('./routes/api/cityRouter');
+const breedRouter = require('./routes/api/breedRouter');
 
 const swaggerRouter = require('./routes/swagger/index.js');
 
@@ -29,6 +30,7 @@ app.use('/api/news', newsRouter);
 app.use('/api/user', userRouter);
 app.use('/api/pet', petRouter);
 app.use('/api/cities', cityRouter);
+app.use('/api/breeds', breedRouter);
 app.use('/api/', swaggerRouter);
 app.use('/api/friends', friendsRouter);
 
