@@ -12,6 +12,7 @@ const newsRouter = require("./routes/api/news");
 const userRouter = require("./routes/api/user");
 const petRouter = require("./routes/api/pet");
 const friendsRouter = require("./routes/api/friends");
+const cityRouter = require("./routes/api/cityRouter");
 
 const swaggerRouter = require("./routes/swagger/index.js");
 
@@ -25,10 +26,11 @@ app.use(express.json());
 
 app.use("/api/notices", noticesRouter);
 app.use("/api/news", newsRouter);
-app.use("/api/friends", friendsRouter);
 app.use("/api/user", userRouter);
 app.use("/api/pet", petRouter);
+app.use("/api/cities", cityRouter);
 app.use("/api/", swaggerRouter);
+app.use("/api/friends", friendsRouter);
 
 app.use((_, res, __) => {
   res.status(404).json({

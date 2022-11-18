@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { Schema } = require('mongoose');
 
 const noticesSchema = new mongoose.Schema({
   titleOfAd: {
@@ -40,10 +41,10 @@ const noticesSchema = new mongoose.Schema({
     type: String,
     enum: ["lost/found", "in good hands", "sell"],
   },
-  // owner: {
-  // 	type: Schema.Types.ObjectId,
-  // 	ref: 'user',
-  // },
+  owner: {
+  	type: Schema.Types.ObjectId,
+  	ref: 'user',
+  },
 });
 
 const Notices = mongoose.model("notices", noticesSchema);

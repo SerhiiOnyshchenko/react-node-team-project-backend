@@ -1,13 +1,13 @@
 const Joi = require("joi");
 const { schemas } = require("../db/usersModel");
-const { WrongBodyError, ValidationError } = require('../helpers/errors');
+const { WrongBodyError, ValidationError } = require("../helpers/errors");
 
 const validateObjectId = (req, res, next) => {
-	const schema = Joi.string().regex(/^[0-9a-fA-F]{24}$/);
-	const validId = schema.validate(req.params.id);
-	if (validId.error) {
-		return next(new WrongBodyError('Not found'));
-	}
+  const schema = Joi.string().regex(/^[0-9a-fA-F]{24}$/);
+  const validId = schema.validate(req.params.id);
+  if (validId.error) {
+    return next(new WrongBodyError("Not found"));
+  }
 };
 
 module.exports = {
@@ -15,7 +15,7 @@ module.exports = {
 		validateObjectId(req, res, next);
 		next();
 	},
-  addNoticesValidation: (req, res, next) => {
+	addNoticesValidation: (req, res, next) => {
 		const schema = Joi.object({
 			titleOfAd: Joi.string().required(),
 			namePet: Joi.string(),
@@ -40,30 +40,37 @@ module.exports = {
 		validateObjectId(req, res, next);
 		next();
 	},
-  registerUserValidation: (req, res, next) => {
-    const validationResult = schemas.registerSchema.validate(req.body);
-    if (validationResult.error) {
-      next(new ValidationError(validationResult.error.details[0].message));
-    }
-    next();
-  },
-  loginUserValidation: (req, res, next) => {
-    const validationResult = schemas.loginSchema.validate(req.body);
-    if (validationResult.error) {
-      next(new ValidationError(validationResult.error.details[0].message));
-    }
-    next();
-  },
-  emailBodyValidation: (req, res, next) => {
-    const schema = Joi.object({
-      email: Joi.string()
-        .email({ minDomainSegments: 2, tlds: { allow: ["com", "net", "ua"] } })
-        .required(),
-    });
-    const validationResult = schema.validate(req.body);
-    if (validationResult.error) {
-      next(new ValidationError(validationResult.error.details[0].message));
-    }
-    next();
-  },
+	registerUserValidation: (req, res, next) => {
+		const validationResult = schemas.registerSchema.validate(req.body);
+		if (validationResult.error) {
+			next(new ValidationError(validationResult.error.details[0].message));
+		}
+		next();
+	},
+	loginUserValidation: (req, res, next) => {
+		const validationResult = schemas.loginSchema.validate(req.body);
+		if (validationResult.error) {
+			next(new ValidationError(validationResult.error.details[0].message));
+		}
+		next();
+	},
+	emailBodyValidation: (req, res, next) => {
+		const schema = Joi.object({
+			email: Joi.string()
+				.email({ minDomainSegments: 2, tlds: { allow: ["com", "net", "ua"] } })
+				.required(),
+		});
+		const validationResult = schema.validate(req.body);
+		if (validationResult.error) {
+			next(new ValidationError(validationResult.error.details[0].message));
+		}
+		next();
+	},
+	updateUserInfoValidation: (req, res, next) => {
+		const validationResult = schemas.updateInfoSchema.validate(req.body);
+		if (validationResult.error) {
+			next(new ValidationError(validationResult.error.details[0].message));
+		}
+		next();
+	}
 };
