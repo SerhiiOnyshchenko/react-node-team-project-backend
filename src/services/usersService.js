@@ -12,6 +12,8 @@ const {
 	NoAuthorizedError,
 	AuthConflictError,
 	ValidationError,
+	WrongBodyError,
+	WrongParamError,
 } = require('../helpers/errors');
 const { sendEmail } = require('../helpers/sendEmail');
 
@@ -137,32 +139,48 @@ const updateUserInfoService = async (
 };
 
 const addToFavoriteService = async (id, noticesId) => {
-	const user = await User.findById(id);
+	const user = await findUserByIdService(id);
 	const notices = await Notices.findById(noticesId);
+	if (user.favorite.find(fav => fav._id.toString() === noticesId)) {
+		throw new WrongParamError('Notices has already been added to favorite');
+	}
 	user.favorite.push(notices);
 	return user.save();
 };
 
 const listFavoriteService = async id => {
-	const user = await User.findById(id);
+	const user = await findUserByIdService(id);
 	return user.favorite;
 };
 
 const deleteFavoriteService = async (id, noticesId) => {
-	const user = await User.findById(id);
-	const favorite = user.favorite.find(fav => fav._id.toString() !== noticesId);
+	const user = await findUserByIdService(id);
+	if (!user.favorite.find(fav => fav._id.toString() === noticesId)) {
+		throw new WrongBodyError('Not found');
+	}
+	const favorite = user.favorite.filter(
+		fav => fav._id.toString() !== noticesId
+	);
 	user.favorite = favorite;
 	user.save();
 };
 
-const refreshTokenService = async (id) => { 
+const refreshTokenService = async id => {
 	const token = jwt.sign({ id }, secret, { expiresIn: '1h' });
 	const user = await User.findByIdAndUpdate(id, { token });
 	if (!user) {
 		throw new NoAuthorizedError('Not authorized');
 	}
-	return {token}
-}
+	return { token };
+};
+
+const findUserByIdService = async id => {
+	const user = await User.findById(id).populate({
+		model: 'notices',
+		path: 'favorite',
+	});
+	return user;
+};
 
 module.exports = {
 	registration,
@@ -175,5 +193,6 @@ module.exports = {
 	addToFavoriteService,
 	listFavoriteService,
 	deleteFavoriteService,
-	refreshTokenService
+	refreshTokenService,
+	findUserByIdService,
 };

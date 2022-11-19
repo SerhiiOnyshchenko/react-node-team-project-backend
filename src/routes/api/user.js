@@ -11,6 +11,7 @@ const {
 	listFavoriteController,
 	deleteFavoriteController,
 	refreshTokenController,
+	findUserByIdController,
 } = require('../../controllers/usersController');
 const {
 	registerUserValidation,
@@ -46,12 +47,17 @@ router
 		updateUserInfoValidation,
 		asyncWrapper(updateUserInfoController)
 	);
+
+router
+	.route('/favorite')
+	.get(authMiddleware, asyncWrapper(listFavoriteController));
+
+router.route('/:id').get(authMiddleware, asyncWrapper(findUserByIdController));
+
 router
 	.route('/favorite/:id')
 	.post(authMiddleware, asyncWrapper(addToFavoriteController));
-router
-	.route('/favorite/')
-	.get(authMiddleware, asyncWrapper(listFavoriteController));
+
 router
 	.route('/favorite/:id')
 	.delete(authMiddleware, asyncWrapper(deleteFavoriteController));

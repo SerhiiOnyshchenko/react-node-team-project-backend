@@ -49,11 +49,10 @@ const userSchema = new Schema(
 			default: '',
 		},
 		favorite: {
-			type: [Schema.Types.ObjectId],
-			ref: 'notices',
+			type: [{ type: Schema.Types.ObjectId, ref: 'Notices' }],
 		},
 	},
-	{ versionKey: false, timestamps: true }
+	{ versionKey: false }
 );
 
 const registerSchema = Joi.object({
