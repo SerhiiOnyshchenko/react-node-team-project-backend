@@ -5,19 +5,19 @@ const {
 const ObjectId = require('mongoose').Types.ObjectId;
 
 const createPetController = async (req, res) => {
-	const { name, birthDate, breed, comments } = req.body;
+	const { name, birthday, breed, comments } = req.body;
 	const user = req.user;
 	const pet = await createPetService(
 		{
 			name,
-			birthDate,
+			birthday,
 			breed,
 			comments,
-			userId: ObjectId(user.id),
+			owner: ObjectId(user.id),
 		},
 		req.file
 	);
-	res.status(201).json({ pet });
+	res.status(201).json(pet)
 };
 
 const deletePetController = async (req, res) => {

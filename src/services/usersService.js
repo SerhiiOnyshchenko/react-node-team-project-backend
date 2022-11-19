@@ -106,7 +106,7 @@ const getUserInfoService = async id => {
 	if (!user) {
 		throw new NoAuthorizedError('Not authorized');
 	}
-	const pets = await Pet.find({ userId: id });
+	const pets = await Pet.find({ owner: id });
 	return { user: { ...user.toObject(), pets } };
 };
 

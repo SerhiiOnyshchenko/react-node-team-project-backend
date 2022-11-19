@@ -51,6 +51,11 @@ const userSchema = new Schema(
 		favorite: {
 			type: [{ type: Schema.Types.ObjectId, ref: 'Notices' }],
 		},
+		pets: {
+			type: [Schema.Types.ObjectId],
+			ref: 'pets',
+			default: [],
+		}
 	},
 	{ versionKey: false }
 );
