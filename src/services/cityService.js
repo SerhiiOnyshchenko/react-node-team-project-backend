@@ -5,6 +5,9 @@ const searchCities = async name => {
 		city: { $regex: name + '.*', $options: 'i' },
 	}).limit(20);
 	return cities;
+	// return cities.map(({ city, region }) => {
+	// 	return { city, region };
+	// });
 };
 
 module.exports = { searchCities };

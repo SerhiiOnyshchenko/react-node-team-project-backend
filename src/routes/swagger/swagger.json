@@ -1,383 +1,1226 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.3",
   "info": {
-    "description": "This is an online super heros server. Below you can find a detailed documentation regarding all possible requests that our online super heros server can handle. Have fun!  <br /> <br /> <i>P.S. In order to see what fields are required in the request body and their types - click on the <i><strong>Model</strong></i> button next to the <i><strong>Example Value</strong></i>.</i>",
-    "version": "1.0.0",
-    "title": "back-end super-heros"
+    "title": "Swagger Petstore - OpenAPI 3.0",
+    "description": "This is a sample Pet Store Server based on the OpenAPI 3.0 specification.  You can find out more about\nSwagger at [https://swagger.io](https://swagger.io). In the third iteration of the pet store, we've switched to the design first approach!\nYou can now help us improve the API whether it's by making changes to the definition itself or to the code.\nThat way, with time, we can improve the API in general, and expose some of the new features in OAS3.",
+    "version": "1.0.11"
   },
-  "host": "backend-superheros.herokuapp.com",
-  "basePath": "/api",
-  "schemes": [
-    "https"
+  "servers": [
+    {
+      "url": "https://team-project-backend.onrender.com/api"
+    }
   ],
   "tags": [
     {
-      "name": "Heros",
-      "description": "Operations about hero"
+      "name": "user",
+      "description": "Operations about user"
+    },
+    {
+      "name": "cities",
+      "description": "Operations about city"
+    },
+    {
+      "name": "breeds",
+      "description": "Operations about breed"
+    },
+    {
+      "name": "friends",
+      "description": "Operations about friends"
+    },
+    {
+      "name": "news",
+      "description": "Operations about news"
+    },
+    {
+      "name": "pet",
+      "description": "Everything about your Pets"
+    },
+    {
+      "name": "notices",
+      "description": "Everything about notices"
     }
   ],
   "paths": {
-    "/heros": {
-      "get": {
+    "/user/registration": {
+      "post": {
         "tags": [
-          "heros"
+          "user"
         ],
-        "summary": "Get list of heros",
-        "operationId": "getHeros",
-        "produces": [
-          "application/json"
+        "summary": "Create user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "createUser",
+        "requestBody": {
+          "description": "Created user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessUser"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "loginUser",
+        "requestBody": {
+          "description": "Created user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserLogin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessUserLogin"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Email or password is wrong"
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs out current logged in user session",
+        "operationId": "logoutUser",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "The name that needs to be fetched. Use user1 for testing. ",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
+            }
+          }
         ],
         "responses": {
           "200": {
-            "description": "Operation successful heros list",
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/user/current": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get current user in user session",
+        "operationId": "currentUser",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "The name that needs to be fetched. Use user1 for testing. ",
+            "required": true,
             "schema": {
-              "$ref": "#/definitions/herosInfoSuccess"
+              "$ref": "#/components/schemas/Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessUserLogin"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/user/update": {
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Update user information",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "The name that needs to be fetched. Use user1 for testing. ",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "format": "Jon"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "john@email.com"
+                  },
+                  "city": {
+                    "type": "string",
+                    "format": "Kyiv, Kyiv"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "format": "+380999999999"
+                  },
+                  "birthday": {
+                    "type": "string",
+                    "format": "00.00.0000"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "image/png"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessUserLogin"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/user/favorite": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get user favorite list",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "getFavoriteList",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "The name that needs to be fetched. Use user1 for testing. ",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pet"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/user/favorite/:petId": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Add petId to user favorite list",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "postPetId",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "The name that needs to be fetched. Use user1 for testing. ",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessUserLogin"
+                }
+              }
             }
           },
           "400": {
-            "description": "Invalid credentials supplied",
+            "description": "Invalid username supplied"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Delete petId from user favorite list",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "deletePetId",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "The name that needs to be fetched. Use user1 for testing. ",
+            "required": true,
             "schema": {
-              "$ref": "#/definitions/badRequest"
+              "$ref": "#/components/schemas/Token"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notices delete from favorite"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/cities/search": {
+      "get": {
+        "tags": [
+          "cities"
+        ],
+        "summary": "Find cities by name",
+        "operationId": "findCityByQuery",
+        "description": "Returns a map of cities codes to quantities",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "q values that need to be considered for filter",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": "q="
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/City"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/breeds/search": {
+      "get": {
+        "tags": [
+          "breeds"
+        ],
+        "summary": "Find breens by name",
+        "operationId": "findBreedsByQuery",
+        "description": "Returns a map of cities codes to quantities",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "q values that need to be considered for filter",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": "q="
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Breed"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/friends": {
+      "get": {
+        "tags": [
+          "friends"
+        ],
+        "summary": "Get all friends",
+        "operationId": "getFriends",
+        "description": "Returns a map of friends codes to quantities",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Friends"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news": {
+      "get": {
+        "tags": [
+          "news"
+        ],
+        "summary": "Get all news",
+        "operationId": "getNews",
+        "description": "Returns a map of news codes to quantities",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/News"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pet": {
+      "post": {
+        "tags": [
+          "pet"
+        ],
+        "summary": "Add a new pet",
+        "description": "Add a new pet to the store and to user pets list",
+        "operationId": "addUserPet",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "The name that needs to be fetched. Use user1 for testing. ",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "format": "Aqko"
+                  },
+                  "breed": {
+                    "type": "string",
+                    "format": "Husky"
+                  },
+                  "comments": {
+                    "type": "string",
+                    "format": "It is a good dog"
+                  },
+                  "birthDate": {
+                    "type": "string",
+                    "format": "00.00.0000"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "image/png"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserPet"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/pet/:petId": {
+      "delete": {
+        "tags": [
+          "pet"
+        ],
+        "summary": "Delete pet by id",
+        "operationId": "deletePetById",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "The name that needs to be fetched. Use user1 for testing. ",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Pet deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Pet ID is invalid"
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "404": {
+            "description": "Pet not found"
+          }
+        }
+      }
+    },
+    "/notices": {
+      "get": {
+        "tags": [
+          "notices"
+        ],
+        "summary": "Get a list notices",
+        "description": "Get a list notices sort by category",
+        "operationId": "getNoticesByCategory",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "description": "q values that need to be considered for filter",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": "category= [ lost/found | in_good_hands | sell ]"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pet"
+                  }
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input"
           }
         }
       },
       "post": {
         "tags": [
-          "heros"
+          "notices"
         ],
-        "summary": "Create new hero.",
-        "description": "This creates a new hero.",
-        "operationId": "createHero",
-        "consumes": [
-          "multipart/form-data"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "summary": "Add a new notice",
+        "description": "Add a new notice in the store",
+        "operationId": "postNotice",
         "parameters": [
           {
-            "name": "image",
-            "in": "formData",
-            "description": "file to upload",
+            "name": "Authorization",
+            "in": "header",
+            "description": "The name that needs to be fetched. Use user1 for testing. ",
             "required": true,
-            "type": "file"
-          },
-          {
-            "name": "nickname",
-            "in": "formData",
-            "description": "nickname data to pass to server",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "realName",
-            "in": "formData",
-            "description": "realName data to pass to server",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "originDescription",
-            "in": "formData",
-            "description": "originDescription data to pass to server",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "superpowers",
-            "in": "formData",
-            "description": "superpowers data to pass to server",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "catchPhrase",
-            "in": "formData",
-            "description": "catchPhrase data to pass to server",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Operation successful. hero info",
             "schema": {
-              "$ref": "#/definitions/herosResponse"
-            }
-          },
-          "400": {
-            "description": "Invalid credentials supplied",
-            "schema": {
-              "$ref": "#/definitions/badRequest"
+              "$ref": "#/components/schemas/Token"
             }
           }
-        }
-      }
-    },
-    "/heros/:heroId": {
-      "get": {
-        "tags": [
-          "heros"
         ],
-        "summary": "Get info about hero",
-        "operationId": "getHeroInfo",
-        "produces": [
-          "application/json"
-        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "namePet": {
+                    "type": "string",
+                    "format": "Aqko"
+                  },
+                  "breed": {
+                    "type": "string",
+                    "format": "Husky"
+                  },
+                  "sex": {
+                    "type": "string",
+                    "format": "male of female"
+                  },
+                  "location": {
+                    "type": "string",
+                    "format": "selo"
+                  },
+                  "price": {
+                    "type": "string",
+                    "format": "5000$"
+                  },
+                  "category": {
+                    "type": "string",
+                    "format": "'lost/found' | 'in good hands' | 'sell'"
+                  },
+                  "comments": {
+                    "type": "string",
+                    "format": "It is a good dog"
+                  },
+                  "birthDate": {
+                    "type": "string",
+                    "format": "00.00.0000"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "image/png"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "Operation successful hero info",
-            "schema": {
-              "$ref": "#/definitions/herosResponse"
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pet"
+                }
+              }
             }
           },
-          "400": {
-            "description": "Invalid credentials supplied",
-            "schema": {
-              "$ref": "#/definitions/badRequest"
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/notices/:noticesId": {
+      "get": {
+        "tags": [
+          "notices"
+        ],
+        "summary": "Get notice by id",
+        "description": "Get notice by id",
+        "operationId": "getNoticesById",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pet"
+                  }
+                }
+              }
             }
+          },
+          "404": {
+            "description": "Pet not found"
           }
         }
       },
       "delete": {
         "tags": [
-          "heros"
+          "notices"
         ],
-        "summary": "Delete hero by id.",
-        "operationId": "deleteHero",
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "hero deleted",
-            "schema": {
-              "$ref": "#/definitions/deleteSuccess"
-            }
-          },
-          "400": {
-            "description": "Invalid credentials supplied",
-            "schema": {
-              "$ref": "#/definitions/badRequest"
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "heros"
-        ],
-        "summary": "Update hero by id.",
-        "description": "This update a hero.",
-        "operationId": "updateHero",
-        "consumes": [
-          "multipart/form-data"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "summary": "Delete notice by id",
+        "description": "Delete notice by id",
+        "operationId": "deleteNoticesById",
         "parameters": [
           {
-            "name": "image",
-            "in": "formData",
-            "description": "file to upload",
-            "required": false,
-            "type": "file"
-          },
-          {
-            "name": "nickname",
-            "in": "formData",
-            "description": "nickname data to pass to server",
+            "name": "Authorization",
+            "in": "header",
+            "description": "The name that needs to be fetched. Use user1 for testing. ",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "realName",
-            "in": "formData",
-            "description": "realName data to pass to server",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "originDescription",
-            "in": "formData",
-            "description": "originDescription data to pass to server",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "superpowers",
-            "in": "formData",
-            "description": "superpowers data to pass to server",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "catchPhrase",
-            "in": "formData",
-            "description": "catchPhrase data to pass to server",
-            "required": true,
-            "type": "string"
+            "schema": {
+              "$ref": "#/components/schemas/Token"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Operation successful.",
-            "schema": {
-              "$ref": "#/definitions/herosResponse"
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pet"
+                }
+              }
             }
           },
-          "400": {
-            "description": "Invalid credentials supplied",
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/notices/user": {
+      "get": {
+        "tags": [
+          "notices"
+        ],
+        "summary": "Get a list notices",
+        "description": "Get a list user notices",
+        "operationId": "getUserNotices",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "The name that needs to be fetched. Use user1 for testing. ",
+            "required": true,
             "schema": {
-              "$ref": "#/definitions/badRequest"
+              "$ref": "#/components/schemas/Token"
             }
           }
-        }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pet"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
       }
     }
   },
-  "definitions": {
-    "HeroPost": {
-      "type": "object",
-      "properties": {
-        "image": {
-          "type": "string",
-          "example": "File"
-        },
-        "nickname": {
-          "type": "string",
-          "example": "string"
-        },
-        "realName": {
-          "type": "string",
-          "example": "string"
-        },
-        "originDescription": {
-          "type": "string",
-          "example": "string"
-        },
-        "superpowers": {
-          "type": "string",
-          "example": "string"
-        },
-        "catchPhrase": {
-          "type": "string",
-          "example": "string"
-        }
+  "components": {
+    "schemas": {
+      "Token": {
+        "type": "string",
+        "example": "Bearer \"token\""
       },
-      "required": [
-        "nickname",
-        "realName"
-      ]
-    },
-    "deleteSuccess": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "hero deleted"
-        }
-      }
-    },
-    "badRequest": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string"
-        }
-      }
-    },
-    "herosInfoSuccess": {
-      "type": "object",
-      "properties": {
-        "heros": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/herosResponse"
+      "Id": {
+        "type": "string",
+        "example": "637216768f895fcabfd83e59"
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "John"
           },
-          "example": [
-            {
-              "_id": "62fe2e8c7496268b6a9d727b",
-              "nickname": "Superman",
-              "realName": "Clark Kent",
-              "originDescription": "he was born Kal-El on the planet Krypton…",
-              "superpowers": "solar energy absorption and…",
-              "catchPhrase": "“Look, up in the sky, it's a bird, it's a plane, it's Superman!”",
-              "image": "https://serhiibackend.s3.eu-central-1.amazonaws.com/upload/bc3e4e27-9c54-47aa-b78b-b82d08fcd8f9-644-superman.jpg"
-            },
-            {
-              "_id": "62fe2e8c7496268b6a9d727b",
-              "nickname": "Superman",
-              "realName": "Clark Kent",
-              "originDescription": "he was born Kal-El on the planet Krypton…",
-              "superpowers": "solar energy absorption and…",
-              "catchPhrase": "“Look, up in the sky, it's a bird, it's a plane, it's Superman!”",
-              "image": "https://serhiibackend.s3.eu-central-1.amazonaws.com/upload/bc3e4e27-9c54-47aa-b78b-b82d08fcd8f9-644-superman.jpg"
-            }
-          ]
-        },
-        "page": {
-          "type": "number",
-          "example": 1
-        },
-        "total": {
-          "type": "number",
-          "example": 2
-        },
-        "status": {
-          "type": "string",
-          "example": "success"
-        }
-      }
-    },
-    "herosResponse": {
-      "type": "object",
-      "properties": {
-        "hero": {
-          "type": "object",
-          "properties": {
-            "_id": {
-              "type": "string",
-              "example": "62fe2e8c7496268b6a9d727b"
-            },
-            "nickname": {
-              "type": "string",
-              "example": "Superman"
-            },
-            "realName": {
-              "type": "string",
-              "example": "Clark Kent"
-            },
-            "originDescription": {
-              "type": "string",
-              "example": "he was born Kal-El on the planet Krypton, before being rocketed to\\r\\nEarth as an infant by his scientist father Jor-El, moments before Krypton's destruction…"
-            },
-            "superpowers": {
-              "type": "string",
-              "example": "solar energy absorption and healing factor, solar flare and heat vision,\\r\\nsolar invulnerability, flight…"
-            },
-            "catchPhrase": {
-              "type": "string",
-              "example": "“Look, up in the sky, it's a bird, it's a plane, it's Superman!”"
-            },
-            "image": {
-              "type": "string",
-              "example": "https://serhiibackend.s3.eu-central-1.amazonaws.com/upload/bc3e4e27-9c54-47aa-b78b-b82d08fcd8f9-644-superman.jpg"
-            }
+          "email": {
+            "type": "string",
+            "example": "john@email.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "1234567"
+          },
+          "phone": {
+            "type": "string",
+            "example": "+380999999999"
+          },
+          "city": {
+            "type": "string",
+            "example": "Kyiv, Kyiv"
           }
         },
-        "status": {
-          "type": "string",
-          "example": "success"
+        "xml": {
+          "name": "user"
         }
       },
-      "required": [
-        "owner",
-        "recipient",
-        "sum"
-      ]
+      "UserLogin": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "john@email.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "1234567"
+          }
+        }
+      },
+      "SuccessUser": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "name": {
+            "type": "string",
+            "example": "John"
+          },
+          "email": {
+            "type": "string",
+            "example": "john@email.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "1234567"
+          },
+          "phone": {
+            "type": "string",
+            "example": "+380999999999"
+          },
+          "city": {
+            "type": "string",
+            "example": "Kyiv, Kyiv"
+          },
+          "favorite": {
+            "example": []
+          },
+          "pets": {
+            "example": []
+          },
+          "notices": {
+            "example": []
+          },
+          "birthday": {
+            "type": "string",
+            "example": "00.00.0000"
+          },
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzcxMWZiOTA3MDFjZDJlMjllZDJhOSIsImlhdCI6MTY2ODgwMDUwMSwiZXhwIjoxNjY4ODA0MTAxfQ.rJ5btUNE6jrb0XnMgKXGvoX4-RbfuD9ruoCLQAVIrl'"
+          },
+          "image": {
+            "type": "string",
+            "example": "https://serhiibackend.s3.eu-central-1.amazonaws.com/upload/ef6ae7bf-ffd8-49f3-b202-5f792ad1841f-Default-avatar.jpg"
+          }
+        }
+      },
+      "SuccessUserLogin": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "name": {
+            "type": "string",
+            "example": "John"
+          },
+          "email": {
+            "type": "string",
+            "example": "john@email.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "1234567"
+          },
+          "phone": {
+            "type": "string",
+            "example": "+380999999999"
+          },
+          "city": {
+            "type": "string",
+            "example": "Kyiv, Kyiv"
+          },
+          "favorite": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Pet"
+            }
+          },
+          "pets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Pet"
+            }
+          },
+          "notices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Pet"
+            }
+          },
+          "birthday": {
+            "type": "string",
+            "example": "00.00.0000"
+          },
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzcxMWZiOTA3MDFjZDJlMjllZDJhOSIsImlhdCI6MTY2ODgwMDUwMSwiZXhwIjoxNjY4ODA0MTAxfQ.rJ5btUNE6jrb0XnMgKXGvoX4-RbfuD9ruoCLQAVIrl'"
+          },
+          "image": {
+            "type": "string",
+            "example": "https://serhiibackend.s3.eu-central-1.amazonaws.com/upload/ef6ae7bf-ffd8-49f3-b202-5f792ad1841f-Default-avatar.jpg"
+          }
+        }
+      },
+      "UserPet": {
+        "required": [
+          "name",
+          "breed",
+          "image"
+        ],
+        "type": "object",
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "name": {
+            "type": "string",
+            "example": "Aqko"
+          },
+          "breed": {
+            "type": "string",
+            "example": "Husky"
+          },
+          "birthDate": {
+            "type": "string",
+            "example": "00.00.0000"
+          },
+          "comments": {
+            "type": "string",
+            "example": "It is a good dog"
+          },
+          "image": {
+            "type": "string",
+            "example": "https://serhiibackend.s3.eu-central-1.amazonaws.com/upload/d6ce6c09-b195-4637-8477-01b204a946e6-Huski.webp"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/Id"
+          }
+        }
+      },
+      "Pet": {
+        "required": [
+          "titleOfAd",
+          "price",
+          "location",
+          "sex"
+        ],
+        "type": "object",
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "titleOfAd": {
+            "type": "string",
+            "example": "PRODAM sobaky"
+          },
+          "namePet": {
+            "type": "string",
+            "example": "Aqko"
+          },
+          "breed": {
+            "type": "string",
+            "example": "Husky"
+          },
+          "sex": {
+            "type": "string",
+            "example": "male of female"
+          },
+          "location": {
+            "type": "string",
+            "example": "selo"
+          },
+          "price": {
+            "type": "string",
+            "example": "5000$"
+          },
+          "category": {
+            "type": "string",
+            "example": "sell"
+          },
+          "comments": {
+            "type": "string",
+            "example": "It is a good dog"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "image": {
+            "type": "string",
+            "example": "https://serhiibackend.s3.eu-central-1.amazonaws.com/upload/d6ce6c09-b195-4637-8477-01b204a946e6-Huski.webp"
+          }
+        }
+      },
+      "City": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "city": {
+            "type": "string",
+            "example": "Lviv"
+          },
+          "region": {
+            "type": "string",
+            "example": "L’vivs’ka Oblast’"
+          }
+        }
+      },
+      "Breed": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "breed": {
+            "type": "string",
+            "example": "Husky"
+          }
+        }
+      },
+      "Friends": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "title": {
+            "type": "string",
+            "example": "Сіріус"
+          },
+          "url": {
+            "type": "string",
+            "example": "https://dogcat.com.ua"
+          },
+          "addressUrl": {
+            "type": "string",
+            "example": "https://goo.gl/maps/iq8NXEUf31EAQCzc6"
+          },
+          "imageUrl": {
+            "type": "string",
+            "example": "https://storage.googleapis.com/kidslikev2_bucket/pets-support/images/sponsors/frame_287.png"
+          },
+          "address": {
+            "type": "string",
+            "example": "Fedorivka, Kyiv Oblast, Ukraine, 07372"
+          },
+          "phone": {
+            "type": "string",
+            "example": 380931934069
+          },
+          "email": {
+            "type": "string",
+            "example": "hello@happypaw.ua"
+          },
+          "workDays": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "example": {
+                    "isOpen": false
+                  }
+                },
+                {
+                  "type": "object",
+                  "example": {
+                    "isOpen": true,
+                    "from": "11:00",
+                    "to": "16:00"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "News": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "title": {
+            "type": "string",
+            "example": "В День ветеринара в столиці..."
+          },
+          "url": {
+            "type": "string",
+            "example": "https://www.kmlvm.com.ua/v-den-veterynara-v-stolytsi-projde-bezkoshtovnyj-trening-z-nadannya-pershoyi-dopomogy-tvarynam/"
+          },
+          "description": {
+            "type": "string",
+            "example": "В неділю, 14 серпня, в Тимчасовому притулку..."
+          },
+          "date": {
+            "type": "string",
+            "example": "2022-08-12"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Authorization": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
     }
   }
 }
