@@ -8,7 +8,7 @@ const breedSchema = new Schema(
 			required: true,
 		},
 	},
-	{ versionKey: false, timestamps: false }
+	{ versionKey: false }
 );
 
 const searchBreedSchema = Joi.object({

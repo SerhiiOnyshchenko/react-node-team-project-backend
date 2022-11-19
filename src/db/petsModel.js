@@ -34,7 +34,7 @@ const petsSchema = new Schema(
 			required: true,
 		},
 	},
-	{ versionKey: false, timestamps: false }
+	{ versionKey: false }
 );
 
 const createPetSchema = Joi.object({
