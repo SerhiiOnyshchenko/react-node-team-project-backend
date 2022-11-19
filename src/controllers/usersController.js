@@ -10,6 +10,7 @@ const {
 	listFavoriteService,
 	deleteFavoriteService,
 	refreshTokenService,
+	findUserByIdService,
 } = require('../services/usersService');
 
 // const { sendEmail } = require("../helpers/sendEmail");
@@ -85,14 +86,20 @@ const deleteFavoriteController = async (req, res) => {
 	const { id } = req.user;
 	const noticesId = req.params.id;
 	await deleteFavoriteService(id, noticesId);
-	res.json('Notices delete from favorite');
+	res.json('Notices deleted from favorite');
 };
 
-const refreshTokenController = async (req, res) => { 
+const refreshTokenController = async (req, res) => {
 	const { id } = req.user;
 	const { token } = await refreshTokenService(id);
-	res.json({token})
-}
+	res.json({ token });
+};
+
+const findUserByIdController = async (req, res) => {
+	const id = req.params.id;
+	const user = await findUserByIdService(id);
+	res.json(user);
+};
 
 module.exports = {
 	registrationController,
@@ -105,5 +112,6 @@ module.exports = {
 	addToFavoriteController,
 	listFavoriteController,
 	deleteFavoriteController,
-	refreshTokenController
+	refreshTokenController,
+	findUserByIdController,
 };
