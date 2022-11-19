@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 const Joi = require('joi');
+// const { array } = require('joi');
 
 const phoneRegexp = /^(\+380)\d{9}$/;
 
@@ -52,6 +53,11 @@ const userSchema = new Schema(
 			type: [Schema.Types.ObjectId],
 			ref: 'notices',
 		},
+		pets: {
+			type: [Schema.Types.ObjectId],
+			ref: 'pets',
+			default: [],
+		}
 	},
 	{ versionKey: false, timestamps: true }
 );
