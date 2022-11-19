@@ -51,7 +51,11 @@ const registration = async ({ email, password, name, phone, city }) => {
 			'https://serhiibackend.s3.eu-central-1.amazonaws.com/upload/ef6ae7bf-ffd8-49f3-b202-5f792ad1841f-Default-avatar.jpg',
 	});
 	await sendEmail(createVerifyEmail(email, verificationToken));
-	return newUser; // TO DO uncomment !!!
+	// return newUser;  // TO DO uncomment !!!
+
+	// for tests only - login user after registration
+	return (await login({ email, password })).user;
+	//
 };
 
 const userVerification = async verificationToken => {
