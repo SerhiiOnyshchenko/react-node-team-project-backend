@@ -40,7 +40,7 @@ const noticesSchema = new mongoose.Schema(
 
 		category: {
 			type: String,
-			enum: ['lost/found', 'in good hands', 'sell'],
+			enum: ['lost/found', 'in_good_hands', 'sell'],
 		},
 
 		owner: {

@@ -29,8 +29,7 @@ const friendsSchema = new Schema(
     email: { type: String },
   },
   {
-    versionKey: false,
-    timestamps: true,
+    versionKey: false
   }
 );
 

@@ -9,7 +9,7 @@ const {
 const { WrongParamError } = require('../helpers/errors');
 
 const listNoticesController = async (req, res) => {
-	const { category } = req.body;
+	const { category } = req.query;
 	const notices = await getNotices(category);
 	res.json(notices);
 };
