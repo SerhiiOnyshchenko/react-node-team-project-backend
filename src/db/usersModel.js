@@ -1,6 +1,5 @@
 const { Schema, model } = require('mongoose');
 const Joi = require('joi');
-// const { array } = require('joi');
 
 const phoneRegexp = /^(\+380)\d{9}$/;
 
