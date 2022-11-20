@@ -4,7 +4,7 @@ const { NoPetError } = require('../helpers/errors');
 const { s3Uploadv2 } = require('./s3service');
 
 const createPetService = async (
-		{ name, birthday, breed, comments, owner },
+	{ name, birthday, breed, comments, owner },
 	file
 ) => {
 	const result = await s3Uploadv2(file);
@@ -17,7 +17,7 @@ const createPetService = async (
 		owner,
 		image: result.Location,
 	});
-	await User.findByIdAndUpdate(owner, { $push: {pets: newPet._id} });
+	await User.findByIdAndUpdate(owner, { $push: { pets: newPet._id } });
 
 	return newPet;
 };
@@ -29,7 +29,7 @@ const deletePetService = async (petId, owner) => {
 	}
 	// await s3Deletev2(pet.image);
 	await Pet.findByIdAndDelete(petId);
-	await User.findByIdAndUpdate(owner, { $pull: {pets: pet._id} });
+	await User.findByIdAndUpdate(owner, { $pull: { pets: pet._id } });
 };
 
 module.exports = {

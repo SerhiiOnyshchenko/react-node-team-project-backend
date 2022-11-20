@@ -26,5 +26,12 @@ router.delete(
 	deletePetValidation,
 	asyncWrapper(deletePetController)
 );
-
+router.use((_, res, __) => {
+	res.status(404).json({
+		status: 'error',
+		code: 404,
+		message: 'Use api on routes:   /pet',
+		data: 'Not found',
+	});
+});
 module.exports = router;

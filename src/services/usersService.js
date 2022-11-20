@@ -39,7 +39,7 @@ const registration = async ({ email, password, name, phone, city }) => {
 	}
 	const hashPassword = await bcrypt.hash(password, 10);
 	const verificationToken = uuidv4();
-	const newUser = await User.create({
+	await User.create({
 		email,
 		password: hashPassword,
 		phone,

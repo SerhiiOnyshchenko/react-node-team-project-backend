@@ -1,4 +1,4 @@
-const Friends = require("../db/friendsModel");
+const Friends = require('../db/friendsModel');
 
 const getAllFriends = () => Friends.find();
 

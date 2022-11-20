@@ -41,7 +41,7 @@ router
 	.get(authMiddleware, asyncWrapper(getUserInfoController));
 router
 	.route('/update')
-	.post(
+	.patch(
 		authMiddleware,
 		uploadMiddleware.single('image'),
 		updateUserInfoValidation,
@@ -56,10 +56,7 @@ router.route('/:id').get(authMiddleware, asyncWrapper(findUserByIdController));
 
 router
 	.route('/favorite/:id')
-	.post(authMiddleware, asyncWrapper(addToFavoriteController));
-
-router
-	.route('/favorite/:id')
+	.post(authMiddleware, asyncWrapper(addToFavoriteController))
 	.delete(authMiddleware, asyncWrapper(deleteFavoriteController));
 
 router
@@ -70,7 +67,7 @@ router.use((_, res, __) => {
 	res.status(404).json({
 		status: 'error',
 		code: 404,
-		message: 'Use api on routes: POST /user',
+		message: 'Use api on routes:   /user',
 		data: 'Not found',
 	});
 });
