@@ -5,9 +5,6 @@ const searchBreeds = async name => {
 		breed: { $regex: name + '.*', $options: 'i' },
 	}).limit(20);
 	return breeds;
-	// return breeds.map(({ breed }) => {
-	// 	return { breed };
-	// });
 };
 
 module.exports = { searchBreeds };

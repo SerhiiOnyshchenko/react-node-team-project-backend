@@ -27,26 +27,35 @@ const createVerifyEmail = (email, verificationToken) => {
 	};
 };
 
+const findUserByEmail = async email => {
+	const user = await User.findOne({ email: { $regex: email, $options: 'i' } });
+	return user;
+};
+
 const registration = async ({ email, password, name, phone, city }) => {
-	const user = await User.findOne({ email });
+	const user = await findUserByEmail(email);
 	if (user) {
 		throw new AuthConflictError('Email is already in use');
 	}
 	const hashPassword = await bcrypt.hash(password, 10);
 	const verificationToken = uuidv4();
-
-	const newUser = await User.create({
+	await User.create({
 		email,
 		password: hashPassword,
 		phone,
 		city,
 		name,
 		verificationToken,
+
 		image:
 			'https://serhiibackend.s3.eu-central-1.amazonaws.com/upload/ef6ae7bf-ffd8-49f3-b202-5f792ad1841f-Default-avatar.jpg',
 	});
 	await sendEmail(createVerifyEmail(email, verificationToken));
-	return newUser;
+	//  return newUser;  // TO DO uncomment !!!
+
+	// for tests only - login user after registration
+	return (await login({ email, password })).user;
+	//
 };
 
 const userVerification = async verificationToken => {
@@ -62,7 +71,7 @@ const userVerification = async verificationToken => {
 };
 
 const repeatUserVerification = async email => {
-	const user = await User.findOne({ email });
+	const user = await findUserByEmail(email);
 	if (!user) {
 		throw new ValidationError('User not found');
 	}
@@ -74,13 +83,11 @@ const repeatUserVerification = async email => {
 };
 
 const login = async ({ email, password }) => {
-	let user = await User.findOne({ email });
+	let user = await findUserByEmail(email);
 	if (!user || !(await bcrypt.compare(password, user.password))) {
 		throw new NoAuthorizedError('Email or password is wrong');
 	}
-
 	// for tests only - ignore user verify state flag
-
 	// if (!user.verify) {
 	// 	throw new NoAuthorizedError('Your email is not verification');
 	// }
