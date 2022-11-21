@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { Schema } = require('mongoose');
 
 const noticesSchema = new mongoose.Schema(
 	{
@@ -13,7 +12,7 @@ const noticesSchema = new mongoose.Schema(
 
 		dateOfBirth: {
 			type: String,
-			default: "00.00.0000"
+			default: '00.00.0000',
 		},
 
 		breed: {
@@ -45,7 +44,10 @@ const noticesSchema = new mongoose.Schema(
 		},
 
 		owner: {
-			type: Object,
+			_id: { type: mongoose.Schema.Types.ObjectId },
+			email: { type: String },
+			phone: { type: String },
+			name: { type: String },
 		},
 
 		image: {
