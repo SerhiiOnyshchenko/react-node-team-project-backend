@@ -30,7 +30,7 @@ const getNoticesByIdController = async (req, res) => {
 };
 
 const addNoticesController = async (req, res) => {
-	const { id: owner } = req.user;
+	const { id: ownerId } = req.user;
 	const {
 		titleOfAd,
 		namePet,
@@ -53,7 +53,7 @@ const addNoticesController = async (req, res) => {
 			price,
 			comments,
 			category,
-			owner,
+			ownerId,
 		},
 		req.file
 	);
