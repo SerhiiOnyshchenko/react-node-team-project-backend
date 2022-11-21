@@ -1,7 +1,6 @@
 const { Notices } = require('../db/noticesModel');
 const { User } = require('../db/usersModel');
 const { s3Uploadv2 } = require('./s3service');
-const { User } = require('../db/usersModel');
 
 const getNotices = async category => Notices.find({ category });
 
