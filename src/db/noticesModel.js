@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = require('mongoose');
+const Joi = require('joi');
 
 const noticesSchema = new mongoose.Schema(
 	{
@@ -57,6 +58,12 @@ const noticesSchema = new mongoose.Schema(
 
 const Notices = mongoose.model('notices', noticesSchema);
 
+const searchByTitleSchema = Joi.object({
+	// category: Joi.string().valid('lost/found', 'in_good_hands', 'sell', "favorite_ads", "my_ads"),
+	searchQuery: Joi.string(),
+});
+
 module.exports = {
 	Notices,
+	searchByTitleSchema
 };

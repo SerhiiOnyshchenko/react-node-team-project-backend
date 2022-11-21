@@ -47,6 +47,11 @@ const removeNotices = async id => {
 	await Notices.findByIdAndDelete({ _id: id });
 };
 
+const searchByTitleService = async ({ searchQuery = "" }) => { 
+	const notices = await Notices.find({ titleOfAd: { $regex: searchQuery, $options: "i" } });
+	return notices;
+}
+
 module.exports = {
 	addNotices,
 	getNotices,
@@ -54,4 +59,5 @@ module.exports = {
 	removeNotices,
 	getOneNotices,
 	getUserNotices,
+	searchByTitleService
 };
