@@ -1,5 +1,5 @@
 const { Notices } = require('../db/noticesModel');
-const { s3Uploadv2 } = require('./s3service');
+// const { s3Uploadv2 } = require('./s3service');
 
 const getNotices = async category => Notices.find({ category });
 
@@ -24,7 +24,7 @@ const addNotices = async (
 	},
 	file
 ) => {
-	const result = await s3Uploadv2(file);
+	// const result = await s3Uploadv2(file);
 
 	const notices = new Notices({
 		titleOfAd,
@@ -37,7 +37,7 @@ const addNotices = async (
 		comments,
 		category,
 		owner,
-		image: result.Location,
+		// image: result.Location,
 	});
 	await notices.save();
 	return notices;
@@ -47,8 +47,8 @@ const removeNotices = async id => {
 	await Notices.findByIdAndDelete({ _id: id });
 };
 
-const searchByTitleService = async ({ searchQuery = "" }) => { 
-	const notices = await Notices.find({ titleOfAd: { $regex: searchQuery, $options: "i" } });
+const searchByTitleService = async (query = "") => { 
+	const notices = await Notices.find({ titleOfAd: { $regex: query, $options: "i" } });
 	return notices;
 }
 

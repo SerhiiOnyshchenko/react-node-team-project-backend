@@ -73,9 +73,9 @@ const removeNoticesController = async (req, res) => {
 };
 
 const searchByTitleController = async (req, res) => {
-	const { searchQuery } = req.body;
-	const notices = await searchByTitleService({ searchQuery });
-	res.json({notices})
+	const { q } = req.query;
+	const notices = await searchByTitleService(q);
+	res.json(notices)
 }
 
 module.exports = {
