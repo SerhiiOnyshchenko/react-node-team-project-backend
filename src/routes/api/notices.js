@@ -14,6 +14,7 @@ const {
 } = require('../../controllers/noticesController');
 const { asyncWrapper } = require('../../helpers/apiHelpes');
 const { uploadMiddleware } = require('../../middlewares/uploadMiddleware');
+const { listNoticesValidation } = require('../../middlewares/noticeMiddleware');
 
 const router = new express.Router();
 
@@ -22,7 +23,7 @@ router
 	.get(authMiddleware, asyncWrapper(userListNoticesController));
 router
 	.route('/')
-	.get(asyncWrapper(listNoticesController))
+	.get(listNoticesValidation, asyncWrapper(listNoticesController))
 	.post(
 		authMiddleware,
 		uploadMiddleware.single('image'),
