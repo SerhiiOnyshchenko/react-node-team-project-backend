@@ -9,9 +9,9 @@ const {
 const { WrongParamError } = require('../helpers/errors');
 
 const listNoticesController = async (req, res) => {
-	const { category } = req.query;
-	const notices = await getNotices(category);
-	res.json(notices);
+	const { category, q, page, limit } = req.query;
+	const result = await getNotices({ category, q, page, limit });
+	res.json(result);
 };
 
 const userListNoticesController = async (req, res) => {

@@ -2,7 +2,16 @@ const { Notices } = require('../db/noticesModel');
 const { User } = require('../db/usersModel');
 const { s3Uploadv2 } = require('./s3service');
 
-const getNotices = async category => Notices.find({ category });
+const getNotices = async ({ category, q = "", page = 1, limit = 10 }) => {
+	const noticesToSkip = (page - 1) * limit;
+	const noticesFilter = { titleOfAd: { $regex: q, $options: "i" }, category };
+	const noticesSort = { _id: -1 };
+
+	const notices = await Notices.find(noticesFilter).sort(noticesSort).skip(noticesToSkip).limit(limit);
+	const totalCount = await Notices.find(noticesFilter).count();
+
+	return {notices, totalCount};
+};
 
 const getUserNotices = async ownerId =>
 	Notices.find({
