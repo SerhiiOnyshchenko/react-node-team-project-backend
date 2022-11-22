@@ -1,4 +1,5 @@
 const { Notices } = require('../db/noticesModel');
+const { User } = require('../db/usersModel');
 const { s3Uploadv2 } = require('./s3service');
 
 const getNotices = async ({ category, q = "", page = 1, limit = 10 }) => {
@@ -12,7 +13,10 @@ const getNotices = async ({ category, q = "", page = 1, limit = 10 }) => {
 	return {notices, totalCount};
 };
 
-const getUserNotices = async owner => Notices.find({ owner });
+const getUserNotices = async ownerId =>
+	Notices.find({
+		'owner._id': ownerId,
+	});
 
 const getNoticesById = async id => Notices.findOne({ _id: id });
 
@@ -29,11 +33,12 @@ const addNotices = async (
 		price,
 		comments,
 		category,
-		owner,
+		ownerId,
 	},
 	file
 ) => {
 	const result = await s3Uploadv2(file);
+	const { _id, email, phone, name } = await User.findById(ownerId);
 
 	const notices = new Notices({
 		titleOfAd,
@@ -45,7 +50,7 @@ const addNotices = async (
 		price,
 		comments,
 		category,
-		owner,
+		owner: { _id, email, phone, name },
 		image: result.Location,
 	});
 	await notices.save();
