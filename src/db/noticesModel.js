@@ -58,11 +58,14 @@ const noticesSchema = new mongoose.Schema(
 
 const Notices = mongoose.model('notices', noticesSchema);
 
-const searchByTitleSchema = Joi.object({
+const listNoticesSchema = Joi.object({
+	category: Joi.string().valid('lost/found', 'in_good_hands', 'sell'),
 	q: Joi.string(),
+	page: Joi.number().min(1),
+	limit: Joi.number().min(0)
 });
 
 module.exports = {
 	Notices,
-	searchByTitleSchema
+	listNoticesSchema
 };

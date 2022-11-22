@@ -11,11 +11,10 @@ const {
 	getNoticesByIdController,
 	removeNoticesController,
 	userListNoticesController,
-	searchByTitleController,
 } = require('../../controllers/noticesController');
 const { asyncWrapper } = require('../../helpers/apiHelpes');
 const { uploadMiddleware } = require('../../middlewares/uploadMiddleware');
-const { searchByTitleValidation } = require('../../middlewares/noticeMiddleware');
+const { listNoticesValidation } = require('../../middlewares/noticeMiddleware');
 
 const router = new express.Router();
 
@@ -23,11 +22,8 @@ router
 	.route('/user')
 	.get(authMiddleware, asyncWrapper(userListNoticesController));
 router
-	.route('/search')
-	.get(searchByTitleValidation, asyncWrapper(searchByTitleController));
-router
 	.route('/')
-	.get(asyncWrapper(listNoticesController))
+	.get(listNoticesValidation, asyncWrapper(listNoticesController))
 	.post(
 		authMiddleware,
 		uploadMiddleware.single('image'),

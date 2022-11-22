@@ -1,7 +1,16 @@
 const { Notices } = require('../db/noticesModel');
 const { s3Uploadv2 } = require('./s3service');
 
-const getNotices = async category => Notices.find({ category });
+const getNotices = async ({ category, q = "", page = 1, limit = 10 }) => {
+	const noticesToSkip = (page - 1) * limit;
+	const noticesFilter = { titleOfAd: { $regex: q, $options: "i" }, category };
+	const noticesSort = { _id: -1 };
+
+	const notices = await Notices.find(noticesFilter).sort(noticesSort).skip(noticesToSkip).limit(limit);
+	const totalCount = await Notices.find(noticesFilter).count();
+
+	return {notices, totalCount};
+};
 
 const getUserNotices = async owner => Notices.find({ owner });
 
@@ -47,11 +56,6 @@ const removeNotices = async id => {
 	await Notices.findByIdAndDelete({ _id: id });
 };
 
-const searchByTitleService = async (query = "") => { 
-	const notices = await Notices.find({ titleOfAd: { $regex: query, $options: "i" } });
-	return notices;
-}
-
 module.exports = {
 	addNotices,
 	getNotices,
@@ -59,5 +63,4 @@ module.exports = {
 	removeNotices,
 	getOneNotices,
 	getUserNotices,
-	searchByTitleService
 };

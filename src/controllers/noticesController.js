@@ -5,14 +5,13 @@ const {
 	removeNotices,
 	getOneNotices,
 	getUserNotices,
-	searchByTitleService,
 } = require('../services/noticesService');
 const { WrongParamError } = require('../helpers/errors');
 
 const listNoticesController = async (req, res) => {
-	const { category } = req.query;
-	const notices = await getNotices(category);
-	res.json(notices);
+	const { category, q, page, limit } = req.query;
+	const result = await getNotices({ category, q, page, limit });
+	res.json(result);
 };
 
 const userListNoticesController = async (req, res) => {
@@ -72,17 +71,10 @@ const removeNoticesController = async (req, res) => {
 	res.json({ message: 'notices deleted' });
 };
 
-const searchByTitleController = async (req, res) => {
-	const { q } = req.query;
-	const notices = await searchByTitleService(q);
-	res.json(notices)
-}
-
 module.exports = {
 	addNoticesController,
 	listNoticesController,
 	getNoticesByIdController,
 	removeNoticesController,
 	userListNoticesController,
-	searchByTitleController
 };
