@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 const Joi = require('joi');
 
-const phoneRegexp = /^(\+380)\d{9}$/;
+//const phoneRegexp = /^(\+380)\d{9}$/;
 
 const userSchema = new Schema(
 	{
@@ -21,7 +21,7 @@ const userSchema = new Schema(
 		phone: {
 			type: String,
 			// required: true,
-			match: phoneRegexp,
+			// match: phoneRegexp,
 			unique: true,
 		},
 		city: {
