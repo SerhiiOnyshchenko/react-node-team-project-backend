@@ -20,7 +20,7 @@ const getUserNotices = async ownerId =>
 
 const getNoticesById = async id => Notices.findOne({ _id: id });
 
-const getOneNotices = async (id, owner) => Notices.findOne({ _id: id, owner });
+const getOneNotices = async (id, ownerId) => Notices.findOne({ _id: id, 'owner._id': ownerId, });
 
 const addNotices = async (
 	{
