@@ -26,7 +26,7 @@ const addNotices = async (
 	{
 		titleOfAd,
 		namePet,
-		dateOfBirch,
+		dateOfBirth,
 		breed,
 		sex,
 		location,
@@ -43,7 +43,7 @@ const addNotices = async (
 	const notices = new Notices({
 		titleOfAd,
 		namePet,
-		dateOfBirch,
+		dateOfBirth,
 		breed,
 		sex,
 		location,
