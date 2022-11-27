@@ -17,7 +17,7 @@ const petsSchema = new Schema(
 		breed: {
 			type: String,
 			minLength: 2,
-			maxLength: 16,
+			maxLength: 30,
 			required: true,
 		},
 		comments: {
