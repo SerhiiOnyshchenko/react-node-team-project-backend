@@ -11,7 +11,7 @@ const findNews = async (page, query) => {
 						{ title: { $regex: `${query}` } },
 					],
 			  };
-	const data = await News.find(find).skip(skip).limit(6);
+	const data = await News.find(find).sort({ date: -1 }).skip(skip).limit(6);
 	const totalPages = await News.find().count();
 
 	return { data, page, totalPages };
