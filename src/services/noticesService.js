@@ -4,7 +4,8 @@ const { s3Uploadv2 } = require('./s3service');
 
 const getNotices = async ({ category, q = "", page = 1, limit = 10 }) => {
 	const noticesToSkip = (page - 1) * limit;
-	const noticesFilter = { titleOfAd: { $regex: q, $options: "i" }, category };
+	const categoryText = category === 'in_good_hands' ? 'in good hands' : category
+	const noticesFilter = { titleOfAd: { $regex: q, $options: "i" }, categoryText };
 	const noticesSort = { _id: -1 };
 
 	const notices = await Notices.find(noticesFilter).sort(noticesSort).skip(noticesToSkip).limit(limit);
