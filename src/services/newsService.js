@@ -1,7 +1,7 @@
 const News = require('../db/newsModel');
 
 const findNews = async (page, query) => {
-	const skip = (page - 1) * 6;
+	//const skip = (page - 1) * 6;
 	const find =
 		query === undefined
 			? {}
@@ -11,7 +11,7 @@ const findNews = async (page, query) => {
 						{ title: { $regex: `${query}` } },
 					],
 			  };
-	const data = await News.find(find).sort({ date: -1 }).skip(skip).limit(6);
+	const data = await News.find(find).sort({ date: -1 });
 	const totalPages = await News.find().count();
 
 	return { data, page, totalPages };
